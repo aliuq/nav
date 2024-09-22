@@ -1,4 +1,5 @@
-// Copyright @ 2018-present xiejiahe. All rights reserved. MIT license.
+// 开源项目，未经作者同意，不得以抄袭/复制代码/修改源代码版权信息。
+// Copyright @ 2018-present xiejiahe. All rights reserved.
 // See https://github.com/xjh22222228/nav
 
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
@@ -57,6 +58,7 @@ import { LogoComponent } from '../components/logo/logo.component'
 import { CardComponent } from '../components/card/index.component'
 import { MoveWebComponent } from '../components/move-web/index.component'
 import { WebMoreMenuComponent } from '../components/web-more-menu/index.component'
+import { TagListComponent } from '../components/tag-list/index.component'
 
 import LightComponent from '../view/light/index.component'
 import SuperComponent from '../view/super/index.component'
@@ -64,6 +66,7 @@ import SimComponent from '../view/sim/index.component'
 import SystemComponent from '../view/system/index.component'
 import SystemInfoComponent from '../view/system/info/index.component'
 import SystemBookmarkComponent from '../view/system/bookmark/index.component'
+import SystemBookmarkExportComponent from '../view/system/bookmark-export/index.component'
 import SystemAboutComponent from '../view/system/about/index.component'
 import SystemTagComponent from '../view/system/tag/index.component'
 import SystemSearchComponent from '../view/system/search/index.component'
@@ -74,8 +77,11 @@ import SystemAngleMarkComponent from '../view/system/angle-mark/index.component'
 import SideComponent from '../view/side/index.component'
 import ShortcutComponent from '../view/shortcut/index.component'
 import WebpComponent from '../view/app/default/app.component'
+import VipAuthComponent from '../view/system/vip-auth/index.component'
 
 import { SafeHtmlPipe } from 'src/pipe/safeHtml.pipe'
+import { CommonService } from 'src/services/common'
+import { JumpService } from 'src/services/jump'
 
 import {
   CheckOutline,
@@ -113,6 +119,7 @@ const icons: IconDefinition[] = [
     SystemComponent,
     SystemInfoComponent,
     SystemBookmarkComponent,
+    SystemBookmarkExportComponent,
     SystemAboutComponent,
     SystemTagComponent,
     SystemSearchComponent,
@@ -121,6 +128,7 @@ const icons: IconDefinition[] = [
     SystemAngleMarkComponent,
     SystemWebComponent,
     WebpComponent,
+    VipAuthComponent,
     SwiperComponent,
     FixbarComponent,
     FooterComponent,
@@ -136,6 +144,7 @@ const icons: IconDefinition[] = [
     CardComponent,
     MoveWebComponent,
     WebMoreMenuComponent,
+    TagListComponent,
     SafeHtmlPipe,
   ],
   imports: [
@@ -173,7 +182,11 @@ const icons: IconDefinition[] = [
     BrowserModule,
     AppRoutingModule,
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [
+    { provide: NZ_I18N, useValue: zh_CN },
+    CommonService,
+    JumpService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

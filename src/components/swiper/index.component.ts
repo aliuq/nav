@@ -1,7 +1,9 @@
-// Copyright @ 2018-present xiejiahe. All rights reserved. MIT license.
+// 开源项目，未经作者同意，不得以抄袭/复制代码/修改源代码版权信息。
+// Copyright @ 2018-present xiejiahe. All rights reserved.
 // See https://github.com/xjh22222228/nav
 
 import { Component, Input } from '@angular/core'
+import { JumpService } from 'src/services/jump'
 
 @Component({
   selector: 'app-swiper',
@@ -16,7 +18,7 @@ export class SwiperComponent {
   mySwiper: any = null
   swiperId = 'swiper'
 
-  constructor() {
+  constructor(public jumpService: JumpService) {
     this.swiperId = 'swiper' + parseInt(String(Math.random() * 1000))
   }
 
@@ -36,6 +38,7 @@ export class SwiperComponent {
       return
     }
     this.mySwiper = new Swiper(el, {
+      loop: true,
       autoplay: this.autoplay
         ? {
             delay: 5000,

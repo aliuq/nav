@@ -1,4 +1,5 @@
-// Copyright @ 2018-present xiejiahe. All rights reserved. MIT license.
+// 开源项目，未经作者同意，不得以抄袭/复制代码/修改源代码版权信息。
+// Copyright @ 2018-present xiejiahe. All rights reserved.
 // See https://github.com/xjh22222228/nav
 
 export type ThemeType =
@@ -9,6 +10,8 @@ export type ThemeType =
   | 'App'
   | 'Shortcut'
 
+export type ICardType = 'standard' | 'column' | 'example' | 'retro' | 'original'
+
 type OverType = 'overflow' | 'ellipsis'
 
 type Spider = 'NO' | 'EMPTY' | 'ALWAYS'
@@ -17,7 +20,7 @@ export interface ITagPropValues {
   id: number
   name: string
   color: string
-  createdAt: string
+  createdAt: string | number
   desc: string
   isInner: boolean
 
@@ -28,31 +31,34 @@ export interface ITagProp {
   [tagName: string]: ITagPropValues
 }
 
+export interface IWebTag {
+  id: number | string
+  url?: string
+}
+
 export interface IWebProps {
-  __name__?: string | undefined // 搜索原name值
-  __desc__?: string | undefined
+  __name__?: string // 搜索原name值
+  __desc__?: string
   id: string | number
   name: string
   desc: string
   url: string
-  icon?: string | null
-  createdAt?: string
+  icon: string
+  createdAt: string | number
   rate?: number // 0-5
   top?: boolean
-  index?: number // sort
+  index?: number | string // sort
   ownVisible?: boolean
   breadcrumb: string[]
   ok?: boolean
-  urls?: {
-    [tagName: string]: string
-  }
+  tags?: IWebTag[]
   [key: string]: any
 }
 
 export interface INavThreeProp {
   title?: string
-  icon?: string | null
-  createdAt?: string
+  icon?: string
+  createdAt?: string | number
   collapsed?: boolean
   ownVisible?: boolean
   nav: IWebProps[]
@@ -61,8 +67,8 @@ export interface INavThreeProp {
 
 export interface INavTwoProp {
   title?: string
-  icon?: string | null
-  createdAt?: string
+  icon?: string
+  createdAt?: string | number
   collapsed?: boolean
   ownVisible?: boolean
   nav: INavThreeProp[]
@@ -73,7 +79,7 @@ export interface INavProps extends Object {
   title: string
   id?: number
   icon?: string | null
-  createdAt?: string
+  createdAt?: string | number
   ownVisible?: boolean
   collapsed?: boolean
   nav: INavTwoProp[]
@@ -93,7 +99,6 @@ export interface ISettings {
   favicon: string
   language: 'zh-CN' | 'en'
   loading: string
-  homeUrl: string
   title: string
   description: string
   keywords: string
@@ -104,42 +109,55 @@ export interface ISettings {
   headerContent: string
   showGithub: boolean
   showLanguage: boolean
-  showCopy: Boolean | undefined
-  showShare: Boolean | undefined
-  showThemeToggle: Boolean
+  showCopy?: boolean
+  showShare?: boolean
+  showThemeToggle: boolean
   actionUrl: string | null
   checkUrl: boolean
   errorUrlCount?: number
 
-  lightCardStyle: string
+  appCardStyle: ICardType
+  appDocTitle: string
+
+  lightCardStyle: ICardType
   lightOverType: OverType
   lightImages: Record<string, any>[]
+  lightFooterHTML: string
+  lightDocTitle: string
 
   simThemeImages: Record<string, any>[]
   simThemeDesc: string
   simThemeHeight: number
   simThemeAutoplay: boolean
-  simCardStyle: string
+  simCardStyle: ICardType
   simTitle: string
   simOverType: OverType
+  simFooterHTML: string
+  simDocTitle: string
 
   sideThemeImages: Record<string, any>[]
   sideThemeHeight: number
   sideThemeAutoplay: boolean
-  sideCardStyle: string
+  sideCardStyle: ICardType
   sideTitle: string
+  sideFooterHTML: string
+  sideCollapsed: boolean
+  sideDocTitle: string
 
   shortcutThemeImages: Record<string, any>[]
   shortcutThemeShowWeather: boolean
   shortcutTitle: string
+  shortcutDockCount: number
+  shortcutDocTitle: string
 
   superTitle: string
   superOverType: OverType
-  superCardStyle: string
+  superCardStyle: ICardType
   superImages: Record<string, any>[]
+  superFooterHTML: string
+  superDocTitle: string
 
   showRate: boolean
-  mirrorList: Record<string, any>[]
 
   allowCollect: boolean
   email: string
@@ -148,15 +166,15 @@ export interface ISettings {
   spiderDescription: Spider
   spiderTitle: Spider
   spiderQty: number
+  spiderTimeout: number | string
 
   loadingCode: string
-}
+  openSearch: boolean
+  gitHubCDN: string
 
-export interface IConfig {
-  gitRepoUrl: string
-  provider: 'Github' | 'Gitee'
-  branch: string
-  hashMode: boolean
+  runtime: number
+
+  [key: string]: any
 }
 
 export type internalProps = {
@@ -166,4 +184,8 @@ export type internalProps = {
 
 declare global {
   const Swiper: any
+  interface Window {
+    __FINISHED__: boolean // 记录已取 web 数据
+    __TITLE__: string | undefined
+  }
 }
