@@ -14,7 +14,7 @@ import {
 import { STORAGE_KEY_MAP } from 'src/constants'
 import { isLogin } from './user'
 import { SearchType } from 'src/components/search-engine/index'
-import { websiteList, searchEngineList } from 'src/store'
+import { websiteList, searchEngineList, settings } from 'src/store'
 import { $t } from 'src/locale'
 
 export function randomInt(max: number) {
@@ -362,8 +362,8 @@ export function matchCurrentList(): INavThreeProp[] {
   return data
 }
 
-export function addZero(n: number): string | number {
-  return n < 10 ? `0${n}` : n
+export function addZero(n: number): string {
+  return n < 10 ? `0${n}` : String(n)
 }
 
 // 获取第几个元素超出父节点宽度
@@ -391,9 +391,19 @@ export function isMobile() {
   return 'ontouchstart' in window
 }
 
-export function getDateTime(): Record<string, any> {
+export function getDayOfYear() {
+  const now = new Date()
+  const startOfYear = new Date(now.getFullYear(), 0, 0)
+  // @ts-ignore
+  const diff = now - startOfYear
+  const oneDay = 1000 * 60 * 60 * 24
+  return Math.floor(diff / oneDay)
+}
+
+export function getDateTime() {
   const days = $t('_weeks')
   const now = new Date()
+  const year = now.getFullYear()
   const hours = addZero(now.getHours())
   const minutes = addZero(now.getMinutes())
   const seconds = addZero(now.getSeconds())
@@ -401,11 +411,20 @@ export function getDateTime(): Record<string, any> {
   const date = now.getDate()
   const day = now.getDay()
   return {
+    year,
     hours,
     minutes,
     seconds,
     month,
     date,
     dayText: days[day],
+  } as const
+}
+
+export function getDefaultTheme() {
+  const t = isMobile() ? settings.appTheme : settings.theme
+  if (t === 'Current') {
+    return settings.theme
   }
+  return t
 }

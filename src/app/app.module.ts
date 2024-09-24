@@ -4,6 +4,8 @@
 
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
+import { registerLocaleData } from '@angular/common'
+import zh from '@angular/common/locales/zh'
 
 import { AppRoutingModule } from './app-routing.module'
 import { AppComponent } from './app.component'
@@ -39,6 +41,10 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover'
 import { NzSliderModule } from 'ng-zorro-antd/slider'
 import { IconDefinition } from '@ant-design/icons-angular'
 import { NzSpinModule } from 'ng-zorro-antd/spin'
+import { NzDrawerModule } from 'ng-zorro-antd/drawer'
+import { NzColorPickerModule } from 'ng-zorro-antd/color-picker'
+import { NzCarouselModule } from 'ng-zorro-antd/carousel'
+import { NzTimePickerModule } from 'ng-zorro-antd/time-picker'
 
 import { NZ_I18N } from 'ng-zorro-antd/i18n'
 import { zh_CN } from 'ng-zorro-antd/i18n'
@@ -59,6 +65,15 @@ import { CardComponent } from '../components/card/index.component'
 import { MoveWebComponent } from '../components/move-web/index.component'
 import { WebMoreMenuComponent } from '../components/web-more-menu/index.component'
 import { TagListComponent } from '../components/tag-list/index.component'
+import { CalendarComponent } from '../components/calendar/index.component'
+import { CalendarDrawerComponent } from '../components/calendar/drawer/index.component'
+import { ComponentGroupComponent } from '../components/component-group/index.component'
+import { RuntimeComponent } from '../components/runtime/index.component'
+import { RuntimeDrawerComponent } from '../components/runtime/drawer/index.component'
+import { OffWorkComponent } from '../components/off-work/index.component'
+import { OffWorkDrawerComponent } from '../components/off-work/drawer/index.component'
+import { ImageComponent } from '../components/image/index.component'
+import { ImageDrawerComponent } from '../components/image/drawer/index.component'
 
 import LightComponent from '../view/light/index.component'
 import SuperComponent from '../view/super/index.component'
@@ -67,13 +82,12 @@ import SystemComponent from '../view/system/index.component'
 import SystemInfoComponent from '../view/system/info/index.component'
 import SystemBookmarkComponent from '../view/system/bookmark/index.component'
 import SystemBookmarkExportComponent from '../view/system/bookmark-export/index.component'
-import SystemAboutComponent from '../view/system/about/index.component'
 import SystemTagComponent from '../view/system/tag/index.component'
 import SystemSearchComponent from '../view/system/search/index.component'
 import SystemSettingComponent from '../view/system/setting/index.component'
 import CollectComponent from '../view/system/collect/index.component'
 import SystemWebComponent from '../view/system/web/index.component'
-import SystemAngleMarkComponent from '../view/system/angle-mark/index.component'
+import SystemComponentComponent from '../view/system/component/index.component'
 import SideComponent from '../view/side/index.component'
 import ShortcutComponent from '../view/shortcut/index.component'
 import WebpComponent from '../view/app/default/app.component'
@@ -94,6 +108,8 @@ import {
   PlusOutline,
   StopOutline,
 } from '@ant-design/icons-angular/icons'
+
+registerLocaleData(zh)
 
 const icons: IconDefinition[] = [
   CheckOutline,
@@ -120,13 +136,12 @@ const icons: IconDefinition[] = [
     SystemInfoComponent,
     SystemBookmarkComponent,
     SystemBookmarkExportComponent,
-    SystemAboutComponent,
     SystemTagComponent,
     SystemSearchComponent,
     SystemSettingComponent,
     CollectComponent,
-    SystemAngleMarkComponent,
     SystemWebComponent,
+    SystemComponentComponent,
     WebpComponent,
     VipAuthComponent,
     SwiperComponent,
@@ -145,6 +160,15 @@ const icons: IconDefinition[] = [
     MoveWebComponent,
     WebMoreMenuComponent,
     TagListComponent,
+    CalendarComponent,
+    RuntimeComponent,
+    RuntimeDrawerComponent,
+    OffWorkComponent,
+    ImageComponent,
+    ImageDrawerComponent,
+    OffWorkDrawerComponent,
+    CalendarDrawerComponent,
+    ComponentGroupComponent,
     SafeHtmlPipe,
   ],
   imports: [
@@ -175,6 +199,10 @@ const icons: IconDefinition[] = [
     NzPopoverModule,
     NzSliderModule,
     NzSpinModule,
+    NzDrawerModule,
+    NzColorPickerModule,
+    NzCarouselModule,
+    NzTimePickerModule,
     NzSwitchModule,
     DragDropModule,
     BrowserModule,

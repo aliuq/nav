@@ -47,24 +47,96 @@ const internalPath = path.join('.', 'data', 'internal.json')
 const settingsPath = path.join('.', 'data', 'settings.json')
 const tagPath = path.join('.', 'data', 'tag.json')
 const searchPath = path.join('.', 'data', 'search.json')
+const componentPath = path.join('.', 'data', 'component.json')
 
 let internal = {}
 let db = []
 let settings = {}
 let tags = []
 let search = []
+let components = []
 try {
   db = JSON.parse(fs.readFileSync(dbPath).toString())
 } catch (error) {
   db = defaultDb
 }
 try {
-  internal = JSON.parse(fs.readFileSync(internalPath).toString() || '{}')
-  settings = JSON.parse(fs.readFileSync(settingsPath).toString() || '{}')
-  tags = JSON.parse(fs.readFileSync(tagPath).toString() || '[]')
-  search = JSON.parse(fs.readFileSync(searchPath).toString() || '[]')
-} catch (error) {
-  console.log('parse JSON: ', error.message)
+  internal = JSON.parse(fs.readFileSync(internalPath).toString())
+  settings = JSON.parse(fs.readFileSync(settingsPath).toString())
+  tags = JSON.parse(fs.readFileSync(tagPath).toString())
+  search = JSON.parse(fs.readFileSync(searchPath).toString())
+} catch {}
+
+try {
+  components = JSON.parse(fs.readFileSync(componentPath).toString())
+} catch {
+} finally {
+  /** @type {import('./src/types/index.ts').ComponentType} */
+  let idx = components.findIndex((item) => item.type === 1)
+  const calendar = {
+    type: 1,
+    id: -1,
+    topColor: '#ff5a5d',
+    bgColor: '#1d1d1d',
+  }
+  if (idx >= 0) {
+    components[idx] = {
+      ...calendar,
+      ...components[idx],
+    }
+  } else {
+    components.push(calendar)
+  }
+  //
+  idx = components.findIndex((item) => item.type === 3)
+  const runtime = {
+    type: 3,
+    id: -3,
+    title: '已稳定运行',
+  }
+  if (idx >= 0) {
+    components[idx] = {
+      ...runtime,
+      ...components[idx],
+    }
+  } else {
+    components.push(runtime)
+  }
+  //
+  idx = components.findIndex((item) => item.type === 2)
+  const offWork = {
+    type: 2,
+    id: -2,
+    workTitle: '距离下班还有',
+    restTitle: '休息啦',
+    date: dayjs.tz(new Date(2024, 7, 26, 18, 0, 0)).valueOf(),
+  }
+  if (idx >= 0) {
+    components[idx] = {
+      ...offWork,
+      ...components[idx],
+    }
+  } else {
+    components.push(offWork)
+  }
+  //
+  idx = components.findIndex((item) => item.type === 4)
+  const image = {
+    type: 4,
+    id: -4,
+    url: 'https://gcore.jsdelivr.net/gh/xjh22222228/public@gh-pages/nav/component1.jpg',
+    text: '只有认可，才能强大',
+  }
+  if (idx >= 0) {
+    components[idx] = {
+      ...image,
+      ...components[idx],
+    }
+    components[idx].url = replaceJsdelivrCDN(components[idx].url, settings)
+  } else {
+    components.push(image)
+  }
+  fs.writeFileSync(componentPath, JSON.stringify(components))
 }
 
 {
@@ -131,9 +203,7 @@ try {
 
 {
   const isEn = settings.language === 'en'
-  const desc = isEn
-    ? 'The system is built-in and cannot be deleted'
-    : '系统内置不可删除'
+  const desc = isEn ? 'The system is built-in' : '系统内置不可删除'
   if (!Array.isArray(tags)) {
     tags = []
   }
@@ -297,6 +367,7 @@ try {
   settings.appCardStyle ??= 'retro'
   settings.appDocTitle ||= ''
   settings.gitHubCDN ||= 'gcore.jsdelivr.net'
+  settings.components ||= []
 
   // 替换CDN
   search = search.map((item) => {

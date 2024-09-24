@@ -10,6 +10,24 @@ export type ThemeType =
   | 'App'
   | 'Shortcut'
 
+export enum TopType {
+  Side = 1,
+  Shortcut,
+}
+
+export enum ComponentType {
+  Calendar = 1,
+  OffWork = 2,
+  Runtime = 3,
+  Image = 4,
+}
+
+export interface IComponentProps {
+  id: number
+  type: number
+  [key: string]: any
+}
+
 export type ICardType = 'standard' | 'column' | 'example' | 'retro' | 'original'
 
 type OverType = 'overflow' | 'ellipsis'
@@ -47,6 +65,7 @@ export interface IWebProps {
   createdAt: string | number
   rate?: number // 0-5
   top?: boolean
+  topTypes?: number[]
   index?: number | string // sort
   ownVisible?: boolean
   breadcrumb: string[]
@@ -171,6 +190,7 @@ export interface ISettings {
   loadingCode: string
   openSearch: boolean
   gitHubCDN: string
+  components: IComponentProps[]
 
   runtime: number
 
@@ -180,12 +200,4 @@ export interface ISettings {
 export type internalProps = {
   loginViewCount: number
   userViewCount: number
-}
-
-declare global {
-  const Swiper: any
-  interface Window {
-    __FINISHED__: boolean // 记录已取 web 数据
-    __TITLE__: string | undefined
-  }
 }

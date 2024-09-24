@@ -10,14 +10,16 @@ import { NzNotificationService } from 'ng-zorro-antd/notification'
 import { NzModalService } from 'ng-zorro-antd/modal'
 import { SETTING_PATH } from 'src/constants'
 import { updateFileContent, spiderWeb } from 'src/api'
-import { settings } from 'src/store'
+import { settings, components } from 'src/store'
 import { isSelfDevelop, compilerTemplate } from 'src/utils/util'
+import { componentTitleMap } from '../component/types'
 import event from 'src/utils/mitt'
 import footTemplate from 'src/components/footer/template'
 
 // 额外添加的字段，但不添加到配置中
-const extraForm = {
+const extraForm: Record<string, any> = {
   footTemplate: '',
+  componentOptions: [],
 }
 
 @Component({
@@ -40,10 +42,26 @@ export default class SystemSettingComponent {
     private message: NzMessageService,
     private modal: NzModalService
   ) {
-    this.validateForm = this.fb.group({
+    extraForm['componentOptions'] = components.map((item) => {
+      const checked = settings.components.some(
+        (c) => item.type === c.type && item.id === c.id
+      )
+      return {
+        label: componentTitleMap[item.type],
+        value: item.type,
+        id: item.id,
+        checked,
+      }
+    })
+    const group: any = {
       ...extraForm,
       ...settings,
-    })
+    }
+    const groupPayload: any = {}
+    for (const k in group) {
+      groupPayload[k] = [group[k]]
+    }
+    this.validateForm = this.fb.group(groupPayload)
 
     event.on('GITHUB_USER_INFO', (data: any) => {
       this.validateForm
@@ -215,8 +233,9 @@ export default class SystemSettingComponent {
         function filterImage(item: Record<string, any>) {
           return item['src']
         }
+        const formValues = this.validateForm.value
         const values = {
-          ...this.validateForm.value,
+          ...formValues,
           favicon: this.settings.favicon,
           simThemeImages: this.settings.simThemeImages.filter(filterImage),
           shortcutThemeImages:
@@ -224,6 +243,9 @@ export default class SystemSettingComponent {
           sideThemeImages: this.settings.sideThemeImages.filter(filterImage),
           superImages: this.settings.superImages.filter(filterImage),
           lightImages: this.settings.lightImages.filter(filterImage),
+          components: formValues.componentOptions
+            .filter((item: any) => item.checked)
+            .map((item: any) => ({ type: item.value, id: item.id })),
         }
         for (const k in extraForm) {
           delete values[k]

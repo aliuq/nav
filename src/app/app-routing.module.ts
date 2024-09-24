@@ -5,7 +5,6 @@
 import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import config from '../../nav.config.json'
-import { settings } from 'src/store'
 import LightComponent from '../view/light/index.component'
 import SuperComponent from '../view/super/index.component'
 import SimComponent from '../view/sim/index.component'
@@ -13,18 +12,18 @@ import SystemComponent from '../view/system/index.component'
 import SystemInfoComponent from '../view/system/info/index.component'
 import SystemBookmarkComponent from '../view/system/bookmark/index.component'
 import SystemBookmarkExportComponent from '../view/system/bookmark-export/index.component'
-import SystemAboutComponent from '../view/system/about/index.component'
 import SystemTagComponent from '../view/system/tag/index.component'
 import SystemSearchComponent from '../view/system/search/index.component'
 import SystemSettingComponent from '../view/system/setting/index.component'
 import SystemWebComponent from '../view/system/web/index.component'
-import SystemAngleMarkComponent from '../view/system/angle-mark/index.component'
+import SystemComponentComponent from '../view/system/component/index.component'
 import SideComponent from '../view/side/index.component'
 import ShortcutComponent from '../view/shortcut/index.component'
 import CollectComponent from '../view/system/collect/index.component'
 import WebpComponent from '../view/app/default/app.component'
 import VipAuthComponent from '../view/system/vip-auth/index.component'
 import { isSelfDevelop } from 'src/utils/util'
+import { getDefaultTheme } from 'src/utils'
 
 export const routes: Routes = [
   {
@@ -86,10 +85,6 @@ export const routes: Routes = [
         component: VipAuthComponent,
       },
       {
-        path: 'about',
-        component: SystemAboutComponent,
-      },
-      {
         path: 'tag',
         component: SystemTagComponent,
       },
@@ -102,8 +97,8 @@ export const routes: Routes = [
         component: SystemSettingComponent,
       },
       {
-        path: 'angle',
-        component: SystemAngleMarkComponent,
+        path: 'component',
+        component: SystemComponentComponent,
       },
       {
         path: 'web',
@@ -119,7 +114,7 @@ export const routes: Routes = [
 
 // 自有部署异步
 if (!isSelfDevelop) {
-  const defaultTheme = settings.theme?.toLowerCase?.()
+  const defaultTheme = getDefaultTheme().toLowerCase()
   const hasDefault = routes.find((item) => item.path === defaultTheme)
   if (hasDefault) {
     routes.push({

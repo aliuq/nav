@@ -50,7 +50,6 @@
 @media (max-width: 768px) {
   .search-sm {
     display: block;
-    margin-top: 10px;
   }
 }
 
@@ -140,6 +139,11 @@
       user-select: none;
       pointer-events: none;
     }
+  }
+
+  .sim-component {
+    width: var(--width);
+    margin: 0 auto;
   }
 
   .wrapper {
